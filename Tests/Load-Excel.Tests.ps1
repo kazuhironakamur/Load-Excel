@@ -36,7 +36,7 @@ Describe "LoadExcelクラスのテスト" {
         }
 
         It "Excelを終了できること" {
-            $e.Quit()
+            $e.ForceQuit()
 
             $excel_count_after_test = $(Get-Process | Where-Object { $_.ProcessName -eq "EXCEL" }).count
             $excel_count_before_test | Should Be $excel_count_after_test

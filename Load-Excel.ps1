@@ -136,12 +136,14 @@
         }
     }
 
-    Quit() {
+    _Quit($have_to_save) {
         try {
             if ($this.b -ne $null){
-                $this.b.Close($True)
+                $this.b.Close($have_to_save)
                 # Bookがnullでなければ、Sheetもnullでないはず
+                Write-Verbose "Sheet COM Objectをリリースします。"
                 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($this.s)
+                Write-Verbose "Book COM Objectをリリースします。"
                 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($this.b)
             }
         }
@@ -150,13 +152,23 @@
         }
         finally {
             $this.e.Quit()
-            
+
+            Write-Verbose "Excel COM Objectをリリースします。"
             [System.Runtime.Interopservices.Marshal]::ReleaseComObject($this.e)
+            Write-Verbose "GCを実行します。"
             [GC]::Collect()
 
             #実際にプロセスが終了するまで少し時間がかかる 1秒じゃ足りなかった。
             sleep 3
         }
+    }
+    
+    Quit() {
+        $this._Quit($True)
+    }
+
+    ForceQuit() {
+        $this._Quit($False)
     }
 
     [boolean]__IsNaturalNumber($arg) {
