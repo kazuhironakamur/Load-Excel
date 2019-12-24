@@ -126,6 +126,17 @@
         return $true
     }
 
+    # $order: 1 => ascending
+    #         2 => descending
+    [boolean]AutoFilterSort($index, $order) {
+        $sort_obj = $this.s.AutoFilter.Sort
+        $sort_obj.SortFields.Clear()
+        $sort_obj.SortFields.Add($this.s.AutoFilter.Range($index), $null, $order)
+        $sort_obj.Apply()
+
+        return $true
+    }
+
     [boolean]PressButton($name) {
         Write-Verbose "ボタンの一覧を取得しました。"
         foreach($btn in $this.s.Buttons()) {
