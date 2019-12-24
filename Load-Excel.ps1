@@ -130,8 +130,14 @@
     #         2 => descending
     [boolean]AutoFilterSort($index, $order) {
         $sort_obj = $this.s.AutoFilter.Sort
+        
+        Write-Verbose "既存の AutoFilter の SortFields をクリアします。"
         $sort_obj.SortFields.Clear()
+        
+        Write-Verbose "SortFields に 列 $index 番で $order (1: asc, 2: desc) の条件を追加します。"
         $sort_obj.SortFields.Add($this.s.AutoFilter.Range($index), $null, $order)
+        
+        Write-Verbose "Sortを実行します。"
         $sort_obj.Apply()
 
         return $true
