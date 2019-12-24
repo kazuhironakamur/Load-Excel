@@ -113,6 +113,19 @@
         }
     }
 
+    [boolean]AddAutoFilterToRow($index) {
+        Write-Verbose "$index 行目にオートフィルターを追加します。"
+        $this.s.Rows($index).AutoFilter()
+        return $true
+    }
+
+    # 使い道ないかも
+    [boolean]AddAutoFilterToColumn($index) {
+        Write-Verbose "$index 列目にオートフィルターを追加します。"
+        $this.s.Columns($index).AutoFilter()
+        return $true
+    }
+
     [boolean]PressButton($name) {
         Write-Verbose "ボタンの一覧を取得しました。"
         foreach($btn in $this.s.Buttons()) {
