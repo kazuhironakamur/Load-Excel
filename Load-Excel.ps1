@@ -114,33 +114,56 @@
     }
 
     [boolean]AddAutoFilterToRow($index) {
-        Write-Verbose "$index 行目にオートフィルターを追加します。"
-        $this.s.Rows($index).AutoFilter()
-        return $true
+        try {
+            Write-Verbose "$index 行目にオートフィルターを追加します。"
+            $this.s.Rows($index).AutoFilter()
+            
+            return $true
+        }
+        catch {
+            Write-Error "AddAutoFilterToRowで例外が発生しました。"
+
+            return $false
+        }
     }
 
     # 使い道ないかも
     [boolean]AddAutoFilterToColumn($index) {
-        Write-Verbose "$index 列目にオートフィルターを追加します。"
-        $this.s.Columns($index).AutoFilter()
-        return $true
+        try {
+            Write-Verbose "$index 列目にオートフィルターを追加します。"
+            $this.s.Columns($index).AutoFilter()
+        
+            return $true
+        }
+        catch {
+            Write-Error "AddAutoFilterToColumnで例外が発生しました。"
+
+            return $false
+        }
     }
 
     # $order: 1 => ascending
     #         2 => descending
     [boolean]AutoFilterSort($index, $order) {
-        $sort_obj = $this.s.AutoFilter.Sort
+        try {
+            $sort_obj = $this.s.AutoFilter.Sort
         
-        Write-Verbose "既存の AutoFilter の SortFields をクリアします。"
-        $sort_obj.SortFields.Clear()
-        
-        Write-Verbose "SortFields に 列 $index 番で $order (1: asc, 2: desc) の条件を追加します。"
-        $sort_obj.SortFields.Add($this.s.AutoFilter.Range($index), $null, $order)
-        
-        Write-Verbose "Sortを実行します。"
-        $sort_obj.Apply()
+            Write-Verbose "既存の AutoFilter の SortFields をクリアします。"
+            $sort_obj.SortFields.Clear()
+            
+            Write-Verbose "SortFields に 列 $index 番で $order (1: asc, 2: desc) の条件を追加します。"
+            $sort_obj.SortFields.Add($this.s.AutoFilter.Range($index), $null, $order)
+            
+            Write-Verbose "Sortを実行します。"
+            $sort_obj.Apply()
 
-        return $true
+            return $true
+        }
+        catch {
+            Write-Error "AutoFilterでのSort操作で例外が発生しました。"
+
+            return $False
+        }
     }
 
     [boolean]PressButton($name) {
