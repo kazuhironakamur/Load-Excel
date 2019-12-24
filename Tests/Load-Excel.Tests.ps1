@@ -23,7 +23,7 @@ Describe "LoadExcelクラスのテスト" {
             $e | Should Not be $null
         }
 
-        It "Excelを新規作成する" {
+        It "Excelを新規作成できること" {
             $e.New() | Should Be $True
         }
 
